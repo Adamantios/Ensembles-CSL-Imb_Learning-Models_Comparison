@@ -1,7 +1,10 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import seaborn as sns
+from costcla.metrics import cost_loss
 from sklearn.ensemble import BaggingClassifier
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, classification_report, \
+    confusion_matrix
 from sklearn.model_selection import learning_curve, cross_val_score
 
 
@@ -162,3 +165,50 @@ def full_report(true, predicted, averaging='macro') -> None:
           .format(recall_score(true, predicted, average=averaging)))
     print('F1             {:.4f}'
           .format(f1_score(true, predicted, average=averaging)))
+
+
+def cs_report(true, predicted, label_names, cost_matrix) -> None:
+    """
+    Shows a full cost sensitive classification report.
+
+    :param cost_matrix: the cost matrix.
+    :param label_names: the class names.
+    :param true: the true labels.
+    :param predicted: the predicted labels.
+    """
+    # Show a classification report.
+    print(classification_report(true, predicted, target_names=label_names))
+
+    # Create a confusion matrix with the metrics.
+    matrix = confusion_matrix(true, predicted)
+
+    # Create a heatmap of the confusion matrix.
+    plt.figure(figsize=(8, 8))
+    sns.heatmap(matrix, annot=True, fmt='d', linewidths=.1, cmap='YlGnBu',
+                cbar=False, xticklabels=label_names, yticklabels=label_names)
+    plt.title('Total Classification Cost -> {}'.format(cost_loss(true, predicted, cost_matrix)), fontsize='x-large')
+    plt.xticks(fontsize='large')
+    plt.yticks(fontsize='large')
+    plt.xlabel('True output', fontsize='x-large')
+    plt.ylabel('Predicted output', fontsize='x-large')
+    plt.savefig(fname='confusion_matrix.png')
+    plt.show()
+
+
+def full_cs_report(y_test, y_forest, y_svm, y_bayes) -> None:
+    """
+    Make a report for all the cost sensitive classifiers.
+
+    :param y_test: the test labels.
+    :param y_forest: the random forest predicted labels.
+    :param y_svm: the svm predicted labels.
+    :param y_bayes: the bayes predicted labels.
+    """
+    print('Random Forest: \n')
+    full_report(y_test, y_forest)
+    print('\n---------------------------------------------------------------\n')
+    print('SVM: \n')
+    full_report(y_test, y_svm)
+    print('\n---------------------------------------------------------------\n')
+    print('Bayes: \n')
+    full_report(y_test, y_bayes)
