@@ -207,10 +207,10 @@ def full_cs_report(y_test, y_forest, y_svm, y_bayes, label_names, cost_matrix) -
     :param label_names: the class names.
     """
     print('Random Forest: \n')
-    cs_report(y_test, y_forest, label_names, cost_matrix)
+    _cs_report(y_test, y_forest, label_names, cost_matrix)
     print('\n---------------------------------------------------------------\n')
     print('SVM: \n')
-    cs_report(y_test, y_svm, label_names, cost_matrix)
+    _cs_report(y_test, y_svm, label_names, cost_matrix)
     print('\n---------------------------------------------------------------\n')
     print('Bayes: \n')
-    cs_report(y_test, y_bayes, label_names, cost_matrix)
+    _cs_report(y_test, y_bayes, label_names, cost_matrix)
