@@ -214,3 +214,13 @@ def full_cs_report(y_test, y_forest, y_svm, y_bayes, label_names, cost_matrix) -
     print('\n---------------------------------------------------------------\n')
     print('Bayes: \n')
     _cs_report(y_test, y_bayes, label_names, cost_matrix)
+
+
+def cost(clf, X, y):
+    # Temporal function that receives X=[X_train, cost_mat_train], y= Y_train
+    # Reconstructs cost matrix.
+    x = X[:, :-4]
+    cost_mat = X[:, -4:]
+    clf.fit(x, y)
+    c = clf.predict(x)
+    return cost_loss(y, c, cost_mat)
