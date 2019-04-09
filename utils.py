@@ -167,7 +167,7 @@ def full_report(true, predicted, averaging='macro') -> None:
           .format(f1_score(true, predicted, average=averaging)))
 
 
-def cs_report(true, predicted, label_names, cost_matrix) -> None:
+def _cs_report(true, predicted, label_names, cost_matrix) -> None:
     """
     Shows a full cost sensitive classification report.
 
