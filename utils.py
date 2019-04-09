@@ -195,7 +195,7 @@ def cs_report(true, predicted, label_names, cost_matrix) -> None:
     plt.show()
 
 
-def full_cs_report(y_test, y_forest, y_svm, y_bayes) -> None:
+def full_cs_report(y_test, y_forest, y_svm, y_bayes, label_names, cost_matrix) -> None:
     """
     Make a report for all the cost sensitive classifiers.
 
@@ -203,12 +203,14 @@ def full_cs_report(y_test, y_forest, y_svm, y_bayes) -> None:
     :param y_forest: the random forest predicted labels.
     :param y_svm: the svm predicted labels.
     :param y_bayes: the bayes predicted labels.
+    :param cost_matrix: the cost matrix.
+    :param label_names: the class names.
     """
     print('Random Forest: \n')
-    full_report(y_test, y_forest)
+    cs_report(y_test, y_forest, label_names, cost_matrix)
     print('\n---------------------------------------------------------------\n')
     print('SVM: \n')
-    full_report(y_test, y_svm)
+    cs_report(y_test, y_svm, label_names, cost_matrix)
     print('\n---------------------------------------------------------------\n')
     print('Bayes: \n')
-    full_report(y_test, y_bayes)
+    cs_report(y_test, y_bayes, label_names, cost_matrix)
