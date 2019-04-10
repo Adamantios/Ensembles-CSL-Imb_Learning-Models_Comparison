@@ -4,7 +4,7 @@ import seaborn as sns
 from costcla.metrics import cost_loss
 from sklearn.ensemble import BaggingClassifier
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, classification_report, \
-    confusion_matrix
+    confusion_matrix, make_scorer
 from sklearn.model_selection import learning_curve, cross_val_score
 
 
@@ -216,11 +216,26 @@ def full_cs_report(y_test, y_forest, y_svm, y_bayes, label_names, cost_matrix) -
     _cs_report(y_test, y_bayes, label_names, cost_matrix)
 
 
-def cost(clf, X, y):
-    # Temporal function that receives X=[X_train, cost_mat_train], y= Y_train
-    # Reconstructs cost matrix.
-    x = X[:, :-4]
-    cost_mat = X[:, -4:]
-    clf.fit(x, y)
-    c = clf.predict(x)
-    return cost_loss(y, c, cost_mat)
+def cost_loss_func(y_true, y_pred) -> int:
+    """
+
+
+    :param y_true:
+    :param y_pred:
+    :return:
+    """
+    if y_true.shape[0] is not y_pred.shape[0]:
+        raise ValueError('True labels and predicted labels shapes do not match!')
+
+    total_cost = 0
+    for i in range(len(y_true)):
+        if y_true[i] == 0 and y_pred[i] == 1:
+            total_cost += 5
+        if y_true[i] == 1 and y_pred[i] == 0:
+            total_cost += 1
+
+    return total_cost
+
+
+# Define cost loss scorer.
+cost = make_scorer(cost_loss_func, greater_is_better=False)
