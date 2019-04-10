@@ -230,9 +230,9 @@ def cost_loss_func(y_true, y_pred) -> int:
     total_cost = 0
     for i in range(len(y_true)):
         if y_true[i] == 0 and y_pred[i] == 1:
-            total_cost += 5
-        if y_true[i] == 1 and y_pred[i] == 0:
             total_cost += 1
+        if y_true[i] == 1 and y_pred[i] == 0:
+            total_cost += 5
 
     return total_cost
 
