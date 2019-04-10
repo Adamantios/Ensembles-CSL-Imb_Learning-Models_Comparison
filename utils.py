@@ -218,11 +218,11 @@ def full_cs_report(y_test, y_forest, y_svm, y_bayes, label_names, cost_matrix) -
 
 def cost_loss_func(y_true, y_pred) -> int:
     """
+    Define a cost loss function.
 
-
-    :param y_true:
-    :param y_pred:
-    :return:
+    :param y_true: the true labels.
+    :param y_pred: the predicted labels.
+    :return: the total cost.
     """
     if y_true.shape[0] is not y_pred.shape[0]:
         raise ValueError('True labels and predicted labels shapes do not match!')
