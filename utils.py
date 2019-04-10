@@ -280,7 +280,7 @@ def plot_calibration_curve(est, name, X_train, y_train, X_test, y_test) -> None:
     ax1.set_ylabel("Fraction of positives")
     ax1.set_ylim([-0.05, 1.05])
     ax1.legend(loc="lower right")
-    ax1.set_title('Calibration plots  (reliability curve)')
+    ax1.set_title('{}\nCalibration plots  (reliability curve)'.format(name))
 
     ax2.set_xlabel("Mean predicted value")
     ax2.set_ylabel("Count")
