@@ -182,3 +182,29 @@ def plot_confusion_matrix(y_test, y_pred):
     plt.ylabel('Real Classes')
     plt.xlabel('Predicted Classes')
     plt.show()
+
+
+def validate_easy_ensemble(estimator, X, y):
+    acc = []
+    b_acc = []
+    a_p_c = []
+    roc = []
+    gm = []
+    for key, x_val in zip(X.keys(), X.values()):
+        preds = estimator.predict(x_val)
+
+        acc.append(accuracy_score(preds, y[key]))
+        b_acc.append(balanced_accuracy_score(preds, y[key]))
+        a_p_c.append(average_precision_score(preds, y[key]))
+        roc.append(roc_auc_score(preds, y[key]))
+        gm.append(geometric_mean_score(preds, y[key]))
+
+    scores = {'Accuracy Score = ': np.round(np.mean(acc), 3), 'Accuracy Std = ': np.round(np.std(acc), 3),
+              'Balanced Accuracy Score = ': np.round(np.mean(b_acc), 3),
+              'Balanced Accuracy Std = ': np.round(np.std(b_acc), 3),
+              'Average Precision Recall Score = ': np.round(np.mean(a_p_c), 3),
+              'Average Precision Recall Std = ': np.round(np.std(a_p_c), 3),
+              'Roc Auc Score = ': np.round(np.mean(roc), 3), 'Roc Auc Std = ': np.round(np.std(roc), 3),
+              'G Mean Score = ': np.round(np.mean(gm), 3), 'G Mean Std = ': np.round(np.std(gm), 3)}
+
+    return scores
